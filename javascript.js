@@ -2,7 +2,7 @@ game();
 
 //function for whole game
 function game () {
-    let score;
+    let score = 0;
     //loop through 5 rounds and increment or decrement score based on results
     for (let i = 0; i < 5; i++) {
         let playerSelection = promptuser();
@@ -12,12 +12,15 @@ function game () {
         }
 
         let computerSelection = getcomputerchoice();
-        console.log(computerSelection);
         let currentround = playround(playerSelection, computerSelection);
-        if (currentround = "win"){
+        console.log(currentround);
+        
+        if (currentround == "win"){
+            console.log("You win this round!");
             score++;
         }
-        else if (currentround = "lose"){
+        else if (currentround == "lose"){
+            console.log("You lose this round!");
             score--;
         }
     }
@@ -56,11 +59,9 @@ function playround (playerSelection, computerSelection) {
         return "draw";
     }
     else if (playerSelection == "rock" && computerSelection == "scissors" || playerSelection == "scissors" && computerSelection == "paper" || playerSelection == "paper" && computerSelection == "rock") {
-        console.log("You win this round!")
         return "win";
     }
     else {
-        console.log("You lose this round!")
         return "lose";
     }
 }
