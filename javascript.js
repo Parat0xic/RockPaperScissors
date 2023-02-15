@@ -49,9 +49,6 @@ function getcomputerchoice() {
     }
 }
 
-
-
-
 //function for each round of game
 function playround (playerSelection, computerSelection) {
     if (playerSelection == computerSelection) {
