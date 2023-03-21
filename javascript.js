@@ -1,41 +1,66 @@
-game();
 
-//function for whole game
-function game () {
-    let score = 0;
-    //loop through 5 rounds and increment or decrement score based on results
-    for (let i = 0; i < 5; i++) {
-        let playerSelection = promptuser();
-        //exits if user gave incorrect input
-        if (playerSelection == null) {
-            return;
-        }
+let userscore = 0;
+let aiscore = 0;
 
-        let computerSelection = getcomputerchoice();
-        let currentround = playround(playerSelection, computerSelection);
-        console.log(currentround);
+let btns = document.querySelectorAll("button");
+
+const div = document.createElement("div");
+div.classList.add("container");
+
+const userdiv = document.createElement("div");
+userdiv.classList.add("userscorepage");
+
+const aidiv = document.createElement("div");
+aidiv.classList.add("aiscorepage");
+
+const resultdiv = document.createElement("div");
+resultdiv.classList.add("resultpage");
+
+div.appendChild(userdiv);
+div.appendChild(aidiv);
+div.appendChild(resultdiv);
+document.body.appendChild(div);
+
+for (let i of btns) {
+    i.addEventListener("click", (e) => {
         
+        let btnclass = e.target.className;
+        let computerSelection = getcomputerchoice();
+        let currentround = playround(btnclass,computerSelection);
+        
+        //checks who won the round, updates score on page and in vars
         if (currentround == "win"){
-            console.log("You win this round!");
-            score++;
+            userscore++;
+            userdiv.textContent = "User:  " + userscore.toString();
+            resultdiv.textContent = "Round Win";
         }
         else if (currentround == "lose"){
-            console.log("You lose this round!");
-            score--;
+            aiscore++;
+            aidiv.textContent = "AI:  " + aiscore.toString();
+            resultdiv.textContent = "Round Loss";
         }
-    }
-    //makes console look nicer
-    console.log("---------");
-    //check final score tally and declare winner
-    if (score > 0){
-        console.log("You Win!");
-    }
-    else if (score < 0){
-        console.log("You Lose!");
-    }
-    else {
-        console.log("It's A Draw!");
-    }
+        else {
+            resultdiv.textContent = "Round Draw";
+        }
+        
+        //checks for game end and displays who won
+        if (userscore == 5 || aiscore == 5){
+            if (userscore > aiscore) {
+                resultdiv.textContent = "You Win The Game!";
+            }
+            else if (aiscore > userscore) {
+                resultdiv.textContent = "You Lose The Game!";
+            }
+            else {
+                resultdiv.textContent = "You somehow drew the game this shouldn't be possible!";
+            }
+            userscore = 0;
+            aiscore = 0;
+            userdiv.textContent = "User:  " + userscore.toString();
+            aidiv.textContent = "AI:  " + aiscore.toString();
+        }
+        
+    })
 }
 
 //randomly select a choice for AI
@@ -55,7 +80,6 @@ function getcomputerchoice() {
 //function for each round of game
 function playround (playerSelection, computerSelection) {
     if (playerSelection == computerSelection) {
-        console.log("This round is a draw!");
         return "draw";
     }
     else if (playerSelection == "rock" && computerSelection == "scissors" || playerSelection == "scissors" && computerSelection == "paper" || playerSelection == "paper" && computerSelection == "rock") {
@@ -64,20 +88,4 @@ function playround (playerSelection, computerSelection) {
     else {
         return "lose";
     }
-}
-
-//function to get users valid input
-function promptuser() {
-    let userselection = prompt("Rock, Paper, Scissors?");
-
-    //lowercase the input
-    let userselectionlower = userselection.toLowerCase();
-
-    //make sure prompt is valid
-    if (userselectionlower != "rock" && userselectionlower != "paper" && userselectionlower != "scissors") {
-        console.log("Please restart with valid inputs");
-        return;
-    }
-    //return the value if valid 
-    return userselectionlower;
 }
